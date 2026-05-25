@@ -51,11 +51,6 @@
             highlightLayer.openPopup();
         }
 
-        // =====================================================
-        // FIX: Gunakan CRS default L.CRS.EPSG3857 agar
-        // tile OSM & Google Satellite tampil dengan benar.
-        // CRS custom sebelumnya menyebabkan basemap tidak muncul.
-        // =====================================================
         var map = L.map('map', {
             crs: L.CRS.EPSG3857,
             zoomControl: false,
@@ -125,7 +120,6 @@
             }
         }
 
-        // Title control
         var title = new L.Control({'position': 'bottomleft'});
         title.onAdd = function (map) {
             this._div = L.DomUtil.create('div', 'info');
@@ -137,13 +131,8 @@
         };
         title.addTo(map);
 
-        // Zoom control
         var zoomControl = L.control.zoom({ position: 'topleft' }).addTo(map);
 
-        // =====================================================
-        // TAMBAH: Tombol "Tampilkan Lokasi Anda"
-        // Menggunakan L.control.locate dengan konfigurasi lengkap
-        // =====================================================
         L.control.locate({
             position: 'topleft',
             strings: {
@@ -161,7 +150,6 @@
             drawMarker: true
         }).addTo(map);
 
-        // Measure control
         var measureControl = new L.Control.Measure({
             position: 'topleft',
             primaryLengthUnit: 'meters',
@@ -180,10 +168,6 @@
             map.setMinZoom(map.getZoom());
         }
 
-        // =====================================================
-        // FIX: Basemap OSM — pakai CRS.EPSG3857 default,
-        // tile URL & zIndex sudah benar.
-        // =====================================================
         map.createPane('pane_OSMStandard_0');
         map.getPane('pane_OSMStandard_0').style.zIndex = 400;
         var layer_OSMStandard_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -197,9 +181,6 @@
         });
         map.addLayer(layer_OSMStandard_0);
 
-        // =====================================================
-        // TAMBAH: Basemap Google Satellite
-        // =====================================================
         map.createPane('pane_GoogleSatellite');
         map.getPane('pane_GoogleSatellite').style.zIndex = 399;
         var layer_GoogleSatellite = L.tileLayer(
@@ -212,11 +193,7 @@
             minNativeZoom: 0,
             maxNativeZoom: 21
         });
-        // Google Satellite tidak aktif secara default
 
-        // =====================================================
-        // FIX: Basemap Google Maps (Jalan)
-        // =====================================================
         map.createPane('pane_GoogleMaps');
         map.getPane('pane_GoogleMaps').style.zIndex = 398;
         var layer_GoogleMaps = L.tileLayer(
@@ -230,7 +207,6 @@
             maxNativeZoom: 21
         });
 
-        // ITENAS layer
         function pop_ITENAS_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
@@ -349,7 +325,6 @@
         bounds_group.addLayer(layer_ITENAS_1);
         map.addLayer(layer_ITENAS_1);
 
-        // Search / Photon
         const url = {
             "Nominatim OSM": "https://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&",
             "France BAN": "https://api-adresse.data.gouv.fr/search/?"
@@ -402,10 +377,6 @@
             last.style.display = (last.style.display === "none") ? "block" : "none";
         });
 
-        // =====================================================
-        // TAMBAH: Layer tree dengan 3 pilihan basemap
-        // OSM Standard, Google Maps, Google Satellite
-        // =====================================================
         var overlaysTree = [
             {
                 label: 'ITENAS<br /><table>' +
@@ -448,7 +419,6 @@
                     '</table>',
                 layer: layer_ITENAS_1
             },
-            // --- Basemap (radio group: hanya satu yang aktif) ---
             { label: "OSM Standard",      layer: layer_OSMStandard_0,    radioGroup: 'basemap' },
             { label: "Google Maps",        layer: layer_GoogleMaps,        radioGroup: 'basemap' },
             { label: "Google Satellite",   layer: layer_GoogleSatellite,   radioGroup: 'basemap' },
