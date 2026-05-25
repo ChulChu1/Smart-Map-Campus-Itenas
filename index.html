@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
@@ -45,6 +45,7 @@
 
     #app{display:flex;flex-direction:column;width:100%;height:100%}
 
+    /* HEADER */
     #hdr{
         height:var(--hh);flex-shrink:0;
         background:var(--panel);border-bottom:1px solid var(--border);
@@ -59,7 +60,6 @@
     }
     .hlogo img{
         height:34px;width:auto;
-        filter: brightness(0) invert(1);
     }
     .htitle h1{font-family:var(--fd);font-size:14px;font-weight:700;letter-spacing:.2px;line-height:1.2}
     .htitle p{font-size:11px;color:var(--muted);font-weight:300;letter-spacing:.3px}
@@ -80,8 +80,10 @@
     }
     .hbtn:hover{background:var(--hover);border-color:var(--borderLt);color:var(--txt)}
 
+    /* BODY */
     #body{flex:1;display:flex;overflow:hidden;position:relative}
 
+    /* SIDEBAR */
     #sb{
         width:var(--sw);height:100%;flex-shrink:0;
         background:var(--panel);border-right:1px solid var(--border);
@@ -131,6 +133,7 @@
     .st-num{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--accent);line-height:1}
     .st-lbl{font-size:9px;color:var(--dim);margin-top:3px;letter-spacing:.3px}
 
+    /* MAP */
     #mapwrap{flex:1;position:relative;overflow:hidden}
     #map{width:100%;height:100%}
 
@@ -144,6 +147,7 @@
     }
     #sbtoggle:hover{background:var(--hover)}
 
+    /* CUSTOM MAP CONTROLS */
     #mctrl{
         position:absolute;top:14px;right:14px;z-index:1000;
         display:flex;flex-direction:column;gap:5px;
@@ -170,6 +174,7 @@
     }
     .mbtn:hover .mtt{opacity:1}
 
+    /* LEAFLET OVERRIDES */
     .leaflet-top.leaflet-left,.leaflet-bottom.leaflet-left{display:none!important}
     .leaflet-control-attribution{
         background:var(--panel)!important;color:var(--dim)!important;
@@ -204,6 +209,7 @@
     .leaflet-popup-close-button{color:var(--muted)!important;font-size:17px!important;top:6px!important;right:7px!important}
     .leaflet-popup-close-button:hover{color:var(--txt)!important}
 
+    /* COORDS */
     #coords{
         position:absolute;bottom:14px;right:14px;z-index:1000;
         background:var(--panel);border:1px solid var(--border);
@@ -214,6 +220,7 @@
     }
     #coords span{color:var(--accent)}
 
+    /* LOADING */
     #ld{
         position:fixed;inset:0;background:var(--bg);z-index:9999;
         display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
@@ -226,7 +233,6 @@
     }
     .ld-logo img{
         height:56px;width:auto;
-        filter: brightness(0) invert(1);
     }
     @keyframes lspin{from{transform:rotate(-180deg) scale(0);opacity:0}to{transform:rotate(0) scale(1);opacity:1}}
     .ld-txt{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--txt);letter-spacing:1px}
@@ -238,14 +244,14 @@
 <body>
 
 <div id="ld">
-    <div class="ld-logo"><img src="logo-5.png" alt="Logo Itenas"></div>
+    <div class="ld-logo"><img src="logo-itenas.png" alt="Logo Itenas"></div>
     <div class="ld-txt">Smart Map Campus</div>
     <div class="ld-bar"><div class="ld-fill"></div></div>
 </div>
 
 <div id="app">
     <header id="hdr">
-        <div class="hlogo"><img src="logo-5.png" alt="Logo Itenas"></div>
+        <div class="hlogo"><img src="logo-itenas.png" alt="Logo Itenas"></div>
         <div class="htitle">
             <h1>Smart Map Campus Itenas</h1>
             <p>Institut Teknologi Nasional Bandung</p>
@@ -405,6 +411,7 @@ var layer_ITENAS_1 = new L.geoJson(json_ITENAS_1, {
 });
 map.addLayer(layer_ITENAS_1);
 
+// Build legend
 var legendEl = document.getElementById('legend');
 var fsearch = document.getElementById('fsearch');
 function buildLegend(q) {
@@ -430,6 +437,7 @@ function buildLegend(q) {
 buildLegend('');
 fsearch.addEventListener('input', function(){ buildLegend(this.value); });
 
+// Stats
 var g=0, l=0, f=0;
 Object.keys(colors).forEach(function(n){
     if(n.startsWith('Gedung')) g++;
@@ -440,6 +448,7 @@ document.getElementById('s1').textContent = g;
 document.getElementById('s2').textContent = l;
 document.getElementById('s3').textContent = f;
 
+// Basemap buttons
 document.querySelectorAll('.bm-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
         var bm = this.dataset.bm;
@@ -452,6 +461,7 @@ document.querySelectorAll('.bm-btn').forEach(function(btn){
     });
 });
 
+// Map buttons
 document.getElementById('bzin').addEventListener('click', function(){ map.zoomIn(); });
 document.getElementById('bzout').addEventListener('click', function(){ map.zoomOut(); });
 document.getElementById('bhome').addEventListener('click', function(){ map.fitBounds(campusBounds); });
@@ -477,6 +487,7 @@ document.getElementById('bfs').addEventListener('click', function(){
     isFs = !isFs;
 });
 
+// Sidebar toggle
 var sb = document.getElementById('sb');
 var sbt = document.getElementById('sbtoggle');
 function toggleSb(){
@@ -487,6 +498,7 @@ function toggleSb(){
 document.getElementById('hdr-toggle').addEventListener('click', toggleSb);
 sbt.addEventListener('click', toggleSb);
 
+// Coordinates
 map.on('mousemove', function(e){
     document.getElementById('clat').textContent = e.latlng.lat.toFixed(6);
     document.getElementById('clng').textContent = e.latlng.lng.toFixed(6);
